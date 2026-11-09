@@ -1,4 +1,68 @@
 'use client';
-import {useEffect,useRef,useState} from 'react';import Link from 'next/link';import {gsap} from 'gsap';import {Play,ArrowUpRight,Diamond,ShieldCheck,Infinity,Gift,Globe2,MessageCircle} from 'lucide-react';import {collections,productNames} from '@/lib/site';import {useLanguage} from './SiteShell';import {VideoModal} from './VideoModal';
-export function Home(){const {lang,t}=useLanguage();const [video,setVideo]=useState<string|null>(null);const [heroPlaying,setHeroPlaying]=useState(true);const heroVideo=useRef<HTMLVideoElement>(null);const hero=useRef<HTMLDivElement>(null);useEffect(()=>{if(!hero.current)return;const ctx=gsap.context(()=>{gsap.fromTo('.hero-reveal',{opacity:0,y:16},{opacity:1,y:0,duration:1.1,stagger:.11,ease:'power2.out'});gsap.to('.ambient-glow',{opacity:.72,duration:3,repeat:-1,yoyo:true,ease:'sine.inOut'})},hero);return()=>ctx.revert()},[]);
- return <><section className="hero" ref={hero}><div className="hero-art" aria-hidden="true"/><video ref={heroVideo} className="hero-motion is-playing" src="/videos/homepage-speaking-model.mp4" playsInline autoPlay muted loop preload="metadata"} aria-label="Mona introducing Yakir’s Fine Jewelry"/><div className="ambient-glow" aria-hidden="true"/><div className="hero-interactive"><Link className="model-hotspot" href="/mona" target="_blank" rel="noopener noreferrer" aria-label="Open Mona luxury presentation in a new window"><span className="model-play"><ArrowUpRight size={20}/><span>Meet Mona · View Presentation</span></span></Link><div className="hero-center"><div className="hero-reveal eyebrow">TIMELESS ELEGANCE</div><h1 className="hero-reveal">DIAMOND<br/> COLLECTIONS</h1><p className="hero-reveal">RINGS <i>✦</i> BRACELETS <i>✦</i> NECKLACES <i>✦</i> EARRINGS</p><div className="hero-reveal flourish">✧ ─── ◇ ─── ✧</div><div className="hero-reveal tagline">Frost Yourself with<br/>Yakir’s Fine Jewelry</div><Link className="hero-reveal luxury-button" href="/#collections" target="_blank" rel="noopener noreferrer">{t('explore')} <ArrowUpRight size={17}/></Link></div></div><div id="collections" className="hero-cards">{collections.map((c,i)=><Link className="product-card hero-reveal" href={'/'+c.slug} target="_blank" rel="noopener noreferrer" key={c.slug} aria-label={'Explore '+c.name}><div className={'card-art card-'+c.slug}/><div className="card-overlay"><h2>{productNames[lang][i]}</h2><span className="round-arrow"><ArrowUpRight size={18}/></span></div></Link>)}</div><div className="hero-perks"><div><Diamond/>{'Custom Design · Made to Measure'}</div><div><ShieldCheck/>{'Certified Diamonds'}</div><div><Infinity/>{'Lifetime Care & Service'}</div><div><Gift/>{'Luxury Packaging'}</div><div><Globe2/>{'Worldwide Delivery'}</div><a href="https://wa.me/972538217406" target="_blank" rel="noopener noreferrer" className="whatsapp"><MessageCircle size={20}/>{t('send')}</a></div></section><section className="below-hero"><p className="eyebrow">THE ART OF EXCEPTIONAL JEWELRY</p><h2>Crafted to Captivate.<br/><em>Made to Last.</em></h2><p>Discover rare brilliance, exquisite craftsmanship, and the privilege of jewelry designed around you.</p><Link className="luxury-button" href="/custom-design" target="_blank" rel="noopener noreferrer">{t('custom')} <ArrowUpRight size={17}/></Link></section></>}
+import {useEffect,useRef,useState} from 'react';
+import Link from 'next/link';
+import {gsap} from 'gsap';
+import {ArrowUpRight,Diamond,ShieldCheck,Infinity,Gift,Globe2,MessageCircle} from 'lucide-react';
+import {collections,productNames} from '@/lib/site';
+import {useLanguage} from './SiteShell';
+
+export function Home(){
+  const {lang,t}=useLanguage();
+  const hero=useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    if(!hero.current)return;
+    const ctx=gsap.context(()=>{
+      gsap.fromTo('.hero-reveal',{opacity:0,y:16},{opacity:1,y:0,duration:1.1,stagger:.11,ease:'power2.out'});
+      gsap.to('.ambient-glow',{opacity:.72,duration:3,repeat:-1,yoyo:true,ease:'sine.inOut'});
+    },hero);
+    return()=>ctx.revert();
+  },[]);
+
+  return (
+    <>
+      <section className="hero" ref={hero}>
+        <div className="hero-art" aria-hidden="true"/>
+        <video className="hero-motion is-playing" src="/videos/homepage-speaking-model.mp4" playsInline autoPlay muted loop preload="metadata" aria-label="Mona introducing Yakir’s Fine Jewelry"/>
+        <div className="ambient-glow" aria-hidden="true"/>
+        <div className="hero-interactive">
+          <Link className="model-hotspot" href="/mona" target="_blank" rel="noopener noreferrer" aria-label="Open Mona luxury presentation in a new window">
+            <span className="model-play"><ArrowUpRight size={20}/><span>Meet Mona · View Presentation</span></span>
+          </Link>
+          <div className="hero-center">
+            <div className="hero-reveal eyebrow">TIMELESS ELEGANCE</div>
+            <h1 className="hero-reveal">DIAMOND<br/> COLLECTIONS</h1>
+            <p className="hero-reveal">RINGS ✦ BRACELETS ✦ NECKLACES ✦ EARRINGS</p>
+            <div className="hero-reveal flourish">✧ ─── ◇ ─── ✧</div>
+            <div className="hero-reveal tagline">Frost Yourself with<br/>Yakir’s Fine Jewelry</div>
+            <Link className="hero-reveal luxury-button" href="/#collections" target="_blank" rel="noopener noreferrer">{t('explore')} <ArrowUpRight size={17}/></Link>
+          </div>
+        </div>
+        <div id="collections" className="hero-cards">
+          {collections.map((c,i)=>(
+            <Link className="product-card hero-reveal" href={'/'+c.slug} target="_blank" rel="noopener noreferrer" key={c.slug} aria-label={'Explore '+c.name}>
+              <div className={'card-art card-'+c.slug}/>
+              <div className="card-overlay">
+                <h2>{productNames[lang][i]}</h2>
+                <span className="round-arrow"><ArrowUpRight size={18}/></span>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="hero-perks">
+          <div><Diamond/>Custom Design · Made to Measure</div>
+          <div><ShieldCheck/>Certified Diamonds</div>
+          <div><Infinity/>Lifetime Care & Service</div>
+          <div><Gift/>Luxury Packaging</div>
+          <div><Globe2/>Worldwide Delivery</div>
+          <a href="https://wa.me/972538217406" target="_blank" rel="noopener noreferrer" className="whatsapp"><MessageCircle size={20}/>{t('send')}</a>
+        </div>
+      </section>
+      <section className="below-hero">
+        <p className="eyebrow">THE ART OF EXCEPTIONAL JEWELRY</p>
+        <h2>Crafted to Captivate.<br/><em>Made to Last.</em></h2>
+        <p>Discover rare brilliance, exquisite craftsmanship, and the privilege of jewelry designed around you.</p>
+        <Link className="luxury-button" href="/custom-design" target="_blank" rel="noopener noreferrer">{t('custom')} <ArrowUpRight size={17}/></Link>
+      </section>
+    </>
+  );
+}
